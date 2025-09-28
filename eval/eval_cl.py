@@ -3,7 +3,7 @@ from pathlib import Path
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, roc_auc_score, confusion_matrix
-from train_cl import FastTemporalTransformer, EmbeddingVideoDataset
+from train.train_cl import FastTemporalTransformer, EmbeddingVideoDataset
 
 def evaluate(args):
     dev=torch.device(args.device)
@@ -13,7 +13,7 @@ def evaluate(args):
     d_model,emb_dim=w.size(0),w.size(1)
     model=FastTemporalTransformer(emb_dim,d_model,args.nhead,args.nlayers,args.max_len,args.replay_ratio)
     if args.use_adapters:
-        from adapters import attach_adapters
+        from train.adapters import attach_adapters
         model=attach_adapters(model,bottleneck=args.adapter_bottleneck)
     model.load_state_dict(ckpt,strict=False)
     model.to(dev).eval()
