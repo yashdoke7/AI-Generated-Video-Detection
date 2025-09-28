@@ -1,0 +1,14 @@
+{
+  "train": 8500,
+  "val": 1500,
+  "test": 2000,
+  "cl_arrival": 5000,
+  "pika_holdout": 2000,
+  "params": {
+    "base_total": 12000,
+    "base_val": 1500,
+    "base_test": 2000,
+    "cl_total": 5000,
+    "pika_holdout": 2000
+  }
+}
