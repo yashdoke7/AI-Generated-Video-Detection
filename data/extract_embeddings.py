@@ -57,7 +57,7 @@ def main():
         splits = [args.split]
     else:
         # default: typical splits present
-        splits = ['train_manifest', 'val_manifest', 'test_manifest', 'cl_arrival', 'pika_holdout', 'aegis_manifest', 'dfdc_test_manifest']
+        splits = ['train_manifest', 'val_manifest', 'test_manifest', 'cl_arrival', 'pika_holdout', 'aegis_manifest', 'dfdc_test_manifest', 'wilddeepfake_test_manifest']
         # but filter to existing
         splits = [s for s in splits if (frames_root / s).exists()]
 
