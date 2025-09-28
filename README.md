@@ -233,19 +233,21 @@ python ./eval/eval_baseline.py \
 
 ---
 
-### 📈 Results
+## 📊 Results
 
-Dataset       |  Baseline Accuracy  |  Continual Accuracy  |  Baseline AUC  |  Continual AUC
---------------+---------------------+----------------------+----------------+---------------
-Celeb-DF      |  91.2%              |  92.4%               |  0.88          |  0.90         
-DFDC          |  82.08%             |  82.87%              |  0.75          |  0.78         
-WildDeepfake  |  68.5%              |  72.7%               |  0.62          |  0.66         
-VidProM       |  82.1%              |  85.4%               |  0.80          |  0.83         
-AEGIS         |  72.4%              |  75.9%               |  0.74          |  0.78         
+| Dataset         | Baseline Accuracy | Continual Accuracy | Baseline AUC | Continual AUC |
+|-----------------|------------------|-------------------|--------------|--------------|
+| **Celeb-DF**        | 91.2%         | 92.4%             | 0.88         | 0.90         |
+| **DFDC**            | 82.08%        | 82.87%            | 0.75         | 0.78         |
+| **WildDeepfake**    | 68.5%         | 72.7%             | 0.62         | 0.66         |
+| **VidProM**         | 82.1%         | 85.4%             | 0.80         | 0.83         |
+| **AEGIS**           | 72.4%         | 75.9%             | 0.74         | 0.78         |
 
-* ✅ **Continual Learning Improvement**: Unlike typical CL methods that suffer performance drops, UNITE-CL shows consistent improvements
-* ✅ **Cross-Dataset Robustness**: Strong generalization across diverse synthetic video types
-* ✅ **Real-World Applicability**: Tested on challenging benchmarks including AEGIS and in-the-wild datasets
+These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
+
+- ✅ **Continual Learning Improvement:** Unlike typical CL methods that suffer performance drops, UNITE-CL shows consistent improvements.
+- ✅ **Cross-Dataset Robustness:** Strong generalization across diverse synthetic video types.
+- ✅ **Real-World Applicability:** Tested on challenging benchmarks including AEGIS and in-the-wild datasets.
 
 ---
 
