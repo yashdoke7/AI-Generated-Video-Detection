@@ -70,9 +70,9 @@ AI-Generated-Video-Detection/
 
 * Celeb-DF : https://github.com/yuezunli/celeb-deepfakeforensics
 * DFDC (DeepFake Detection Challenge) : https://www.kaggle.com/c/deepfake-detection-challenge
-* WildDeepfake : https://github.com/EndlessSora/wilddeepfake
-* VidProM : https://huggingface.co/datasets/WenhaoWang/VidProM/tree/main
-* AEGIS : https://aegis.deepfakechallenge.org/
+* WildDeepfake : https://huggingface.co/datasets/xingjunm/WildDeepfake
+* VidProM : https://huggingface.co/datasets/WenhaoWang/VidProM
+* AEGIS : https://huggingface.co/datasets/Clarifiedfish/AEGIS
 * UCF101 (Real videos dataset) : https://www.crcv.ucf.edu/research/data-sets/ucf101/
 * SHAM : https://github.com/adobe-research/VideoSham-dataset
 ---
