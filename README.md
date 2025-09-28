@@ -306,7 +306,7 @@ python .\eval\eval_baseline.py `
 <img width="4472" height="1773" alt="learning_curves" src="https://github.com/user-attachments/assets/7419f0fc-d529-4bb2-9863-2b0922a0b723" />
 
 *Figure 3: ROC curves for Baseline and Continual models.*
-<img width="1137" height="450" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
+<img width="1137" height="300" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
 
 These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
 
