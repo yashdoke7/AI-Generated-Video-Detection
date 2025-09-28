@@ -129,6 +129,20 @@ foreach ($m in $manifests) {
   }
 }
 ```
+Evaluation Frame Extraction (Skip for WildDeepfake which already has frames)
+```
+$eval_manifests = @(
+  ".\manifests\aegis_manifest.csv",
+  ".\manifests\dfdc_test_manifest.csv",
+)
+
+foreach ($m in $eval_manifests) {
+  if (Test-Path $m) {
+    Write-Host "Extracting frames for $m"
+    python .\data\extract_frames.py --manifest $m --out .\eval_frames --fps 2 --size 224 --max_frames 32
+  }
+}
+```
 
 **Step 4: Generate Embeddings**
 ```
@@ -138,6 +152,27 @@ python ./data/extract_embeddings.py \
   --split train_manifest \
   --out_root ./embeddings \
   --batch 1 \
+  --fp16
+```
+Generate Embeddings for Evaluation Data
+```
+python .\data\extract_embeddings.py `
+  --frames_root .\eval_frames `
+  --split aegis_manifest `
+  --out_root .\embeddings_eval `
+  --batch 1 `
+  --fp16
+python .\data\extract_embeddings.py `
+  --frames_root .\eval_frames `
+  --split dfdc_test_manifest `
+  --out_root .\embeddings_eval `
+  --batch 1 `
+  --fp16
+python .\data\extract_embeddings.py `
+  --frames_root .\eval_frames `
+  --split wilddeepfake_test_manifest `
+  --out_root .\embeddings_eval `
+  --batch 1 `
   --fp16
 ```
 
@@ -219,21 +254,28 @@ python ./eval/eval_cl.py \
   --threshold 0.5
 ```
 
-**Cross-Dataset Testing (AEGIS, DFDC)**
+**Cross-Dataset Testing**
 ```
-# Test on AEGIS benchmark
-python ./eval/eval_baseline.py \
-  --manifest ./manifests/aegis_videos_manifest.csv \
-  --emb_root ./embeddings \
-  --model ./models/Baseline/baseline.pth \
-  --out_csv ./results/preds_aegis_baseline.csv
+# AEGIS benchmark:
+python .\eval\eval_baseline.py `
+  --manifest .\manifests\aegis_manifest.csv `
+  --emb_root .\embeddings `
+  --model .\models\Baseline\baseline.pth `
+  --out_csv .\results\preds_aegis_baseline.csv
 
-# Test on DFDC
-python ./eval/eval_baseline.py \
-  --manifest ./manifests/dfdc_part48_manifest.csv \
-  --emb_root ./embeddings \
-  --model ./models/Baseline/baseline.pth \
-  --out_csv ./results/preds_dfdc_baseline.csv
+DFDC benchmark:
+python .\eval\eval_baseline.py `
+  --manifest .\manifests\dfdc_test_manifest.csv `
+  --emb_root .\embeddings `
+  --model .\models\Baseline\baseline.pth `
+  --out_csv .\results\preds_dfdc_baseline.csv
+
+WildDeepfake benchmark:
+python .\eval\eval_baseline.py `
+  --manifest .\manifests\wilddeepfake_test_manifest.csv `
+  --emb_root .\embeddings `
+  --model .\models\Baseline\baseline.pth `
+  --out_csv .\results\preds_wilddeepfake_baseline.csv
 ```
 
 ---
