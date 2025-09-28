@@ -24,7 +24,8 @@ My approach leverages **frame-level embeddings** and **transformer-based reasoni
 ### Architecture Diagram
 
 
-<img width="1632" height="711" alt="Arch Diagram_final drawio" src="https://github.com/user-attachments/assets/968b201a-5792-4dad-9885-8cd5060e915b" />
+<img width="1632" height="691" alt="Architecture Diagram drawio" src="https://github.com/user-attachments/assets/6385b132-b16f-4162-80e6-4258aa949d58" />
+
 
 
 ### 🗂️ Repository Structure
