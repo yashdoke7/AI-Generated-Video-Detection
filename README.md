@@ -66,27 +66,42 @@ AI-Generated-Video-Detection/
 * **Evaluation/Testing**: AEGIS, WildDeepfake, DFDC parts, cross-dataset generalization tests
 * **Total Size**: ~80GB (datasets not included in repo — download links provided separately)
   
-# Dataset Download Links for Reference
+# Dataset Download Links
 
 * Celeb-DF : https://github.com/yuezunli/celeb-deepfakeforensics
 * DFDC (DeepFake Detection Challenge) : https://www.kaggle.com/c/deepfake-detection-challenge
-* WildDeepfake : https://github.com/EndlessSora/wilddeepfake
-* VidProM : https://huggingface.co/datasets/WenhaoWang/VidProM/tree/main
-* AEGIS : https://aegis.deepfakechallenge.org/
+* WildDeepfake : https://huggingface.co/datasets/xingjunm/WildDeepfake
+* VidProM : https://huggingface.co/datasets/WenhaoWang/VidProM
+* AEGIS : https://huggingface.co/datasets/Clarifiedfish/AEGIS
 * UCF101 (Real videos dataset) : https://www.crcv.ucf.edu/research/data-sets/ucf101/
 * SHAM : https://github.com/adobe-research/VideoSham-dataset
 ---
 
 ### 🚀 Getting Started
 
-#### 1. Clone and Setup
+#### 1. Clone
 ```
 git clone https://github.com/yashdoke7/AI-Generated-Video-Detection.git
 cd AI-Generated-Video-Detection
+```
+
+#### 2. Set up the Environment
+
+Create and activate virtual environment:
+```
+python -m venv venv
+
+# Windows
+venv\\Scripts\\activate
+
+# Mac/Linux
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-#### 2. Data Preparation
+#### 3. Data Preparation
 
 **Step 1: Create Training Manifests (Main Datasets) (Manifests for these are already attached in the repo - Skip unless you want to change the dataset distribution)**
 ```
@@ -185,7 +200,7 @@ python .\data\extract_embeddings.py `
   --fp16
 ```
 
-#### 3. Training
+#### 4. Training
 
 **Baseline Model Training (UNITE)**
 ```
@@ -229,7 +244,7 @@ python ./train/train_cl.py \
   --adapter_bottleneck 32
 ```
 
-#### 4. Evaluation
+#### 5. Evaluation
 
 **Baseline Model Evaluation**
 ```
@@ -298,6 +313,15 @@ python .\eval\eval_baseline.py `
 | **WildDeepfake**    | 68.5%         | 72.7%             | 0.62         | 0.66         |
 | **VidProM**         | 82.1%         | 85.4%             | 0.80         | 0.83         |
 | **AEGIS**           | 72.4%         | 75.9%             | 0.74         | 0.78         |
+
+*Figure 1: Model accuracy for Baseline and Continual approaches.*
+<img width="4472" height="1772" alt="benchmark_comparison" src="https://github.com/user-attachments/assets/a75cc35d-e82d-4cc3-892d-648720acab90" />
+
+*Figure 2: Simulated training/validation accuracy and loss curves.*
+<img width="4472" height="1773" alt="learning_curves" src="https://github.com/user-attachments/assets/7419f0fc-d529-4bb2-9863-2b0922a0b723" />
+
+*Figure 3: ROC curves for Baseline and Continual models.*
+<img width="1500" height="450" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
 
 These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
 
