@@ -21,6 +21,12 @@ My approach leverages **frame-level embeddings** and **transformer-based reasoni
 
 ---
 
+### Architecture Diagram
+
+
+![WhatsApp Image 2025-09-28 at 11 32 54_b08cf63d](https://github.com/user-attachments/assets/a55f70de-27fa-4d04-8ed8-e19c9f8a8195)
+
+
 ### 🗂️ Repository Structure
 
 ```
