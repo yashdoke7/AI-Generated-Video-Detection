@@ -65,7 +65,16 @@ AI-Generated-Video-Detection/
 * **Training Datasets**: Celeb-DF, Celeb-DF-v2, DFDC, SHAM, UCF101, VidProM (MS, Pika, T2V variants)
 * **Evaluation/Testing**: AEGIS, WildDeepfake, DFDC parts, cross-dataset generalization tests
 * **Total Size**: ~80GB (datasets not included in repo — download links provided separately)
+  
+# Dataset Download Links for Reference
 
+* Celeb-DF : https://github.com/yuezunli/celeb-deepfakeforensics
+* DFDC (DeepFake Detection Challenge) : https://www.kaggle.com/c/deepfake-detection-challenge
+* WildDeepfake : https://github.com/EndlessSora/wilddeepfake
+* VidProM : https://huggingface.co/datasets/WenhaoWang/VidProM/tree/main
+* AEGIS : https://aegis.deepfakechallenge.org/
+* UCF101 (Real videos dataset) : https://www.crcv.ucf.edu/research/data-sets/ucf101/
+* SHAM : https://github.com/adobe-research/VideoSham-dataset
 ---
 
 ### 🚀 Getting Started
