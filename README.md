@@ -45,6 +45,8 @@ AI-Generated-Video-Detection/
 │   ├── eval_baseline.py
 │   └── eval_cl.py
 ├── manifests/              # Generated CSV manifests (auto-created)
+├── frames/                 # Extracted Frames from Videos (auto-created)
+├── embeddings/             # Extracted Embeddings for Frames (auto-created)
 ├── models/                 # Trained model checkpoints
 │   ├── Baseline/
 │   └── Continual/
