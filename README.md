@@ -300,10 +300,13 @@ python .\eval\eval_baseline.py `
 | **AEGIS**           | 72.4%         | 75.9%             | 0.74         | 0.78         |
 
 <img width="4472" height="1772" alt="benchmark_comparison" src="https://github.com/user-attachments/assets/a75cc35d-e82d-4cc3-892d-648720acab90" />
+*Figure 1: Model accuracy for Baseline and Continual approaches.*
 
 <img width="4472" height="1773" alt="learning_curves" src="https://github.com/user-attachments/assets/7419f0fc-d529-4bb2-9863-2b0922a0b723" />
+*Figure 3: Simulated training/validation accuracy and loss curves.*
 
-<img width="2369" height="2372" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
+<img width="4472" height="1772" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
+*Figure 4: ROC curves for Baseline and Continual models.*
 
 These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
 
