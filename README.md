@@ -104,7 +104,3 @@ AI-Generated-Video-Detection/
 MIT License
 
 ---
-
-This version tells interviewers at a glance: *“This isn’t just another implementation; it solves a known problem (CL accuracy drop) and beats expectations.”*
-
-Do you want me to also craft a **short “Key Innovations” block** (like 3 bullets) you could pin at the top of the README for extra emphasis?
