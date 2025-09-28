@@ -13,7 +13,6 @@ My approach leverages **frame-level embeddings** and **transformer-based reasoni
 * **Embedding-Powered Pipeline**: Uses SigLIP to create robust frame embeddings.
 * **Transformer Backbone (UNITE)**: Learns temporal and spatial relationships across frames for video-level reasoning.
 * **Improved Continual Learning (UNITE-CL)**:
-
   * Unlike typical CL approaches that suffer **accuracy, AUC, and F1 drops**, my model improves performance.
   * Demonstrated **better accuracy on both previously seen datasets and new unseen ones**.
 * **Cross-Dataset Generalization**: Trained and tested across diverse benchmarks to avoid dataset bias.
@@ -23,84 +22,264 @@ My approach leverages **frame-level embeddings** and **transformer-based reasoni
 
 ### Architecture Diagram
 
-
 <img width="1632" height="691" alt="Architecture Diagram drawio" src="https://github.com/user-attachments/assets/6385b132-b16f-4162-80e6-4258aa949d58" />
 
-
+---
 
 ### 🗂️ Repository Structure
 
 ```
 AI-Generated-Video-Detection/
-│── data/          # manifests
-│── models/        # UNITE & UNITE-CL implementations
-│── train/         # Training scripts
-│── eval/          # Evaluation scripts & metrics
-│── notebooks/     # Jupyter/Colab notebooks for experimentation
-│── results/       # Graphs, metrics, and sample outputs
-│── requirements.txt
-│── README.md
+├── data/                    # Data preparation scripts and README
+│   ├── create_aegis_manifest.py
+│   ├── create_dfdc_manifest.py
+│   ├── make_manifests_from_structure.py
+│   ├── extract_frames.py
+│   ├── extract_embeddings.py
+│   └── README.md           # Detailed data preparation guide
+├── docs/                   # Documentation and presentations
+│   ├── Architecture Diagram.png
+│   ├── Seminar PPT Presentation.pptx
+│   └── Seminar Report.docx
+├── eval/                   # Evaluation scripts
+│   ├── eval_baseline.py
+│   └── eval_cl.py
+├── manifests/              # Generated CSV manifests (auto-created)
+├── frames/                 # Extracted Frames from Videos (auto-created)
+├── embeddings/             # Extracted Embeddings for Frames (auto-created)
+├── models/                 # Trained model checkpoints
+│   ├── Baseline/
+│   └── Continual/
+├── train/                  # Training scripts
+│   ├── train_baseline.py
+│   ├── train_cl.py
+│   ├── adapters.py
+│   └── attention_diversity.py
+└── README.md
 ```
 
 ---
 
 ### 📊 Datasets Used
 
-* **Training / Pretraining**: OpenVid-1M, VidProM samples, Stable Video Diffusion synthetic data.
-* **Evaluation / Benchmarks**: FaceForensics++, DFDC (preview + full), Celeb-DF, DeeperForensics, WildDeepfake, UADFV, AEGIS, SHAM, UCF101.
-  *(~80GB total, not included in repo — links provided separately)*
+* **Training Datasets**: Celeb-DF, Celeb-DF-v2, DFDC, SHAM, UCF101, VidProM (MS, Pika, T2V variants)
+* **Evaluation/Testing**: AEGIS, WildDeepfake, DFDC parts, cross-dataset generalization tests
+* **Total Size**: ~80GB (datasets not included in repo — download links provided separately)
 
 ---
 
 ### 🚀 Getting Started
 
-1. **Clone the repository**
+#### 1. Clone and Setup
+```
+git clone https://github.com/yashdoke7/AI-Generated-Video-Detection.git
+cd AI-Generated-Video-Detection
+pip install -r requirements.txt
+```
 
-   ```bash
-   git clone https://github.com/<your-username>/AI-Generated-Video-Detection.git
-   cd AI-Generated-Video-Detection
-   ```
+#### 2. Data Preparation
 
-2. **Install dependencies**
+**Step 1: Create Training Manifests (Main Datasets) (Manifests for these are already attached in the repo - Skip unless you want to change the dataset distribution)**
+```
+# Creates train/val/test/cl_arrival/pika_holdout manifests
+python ./data/make_manifests_from_structure.py \
+  --root ./data \
+  --out ./manifests \
+  --base_total 12000 \
+  --base_val 1500 \
+  --base_test 2000 \
+  --cl_total 5000 \
+  --pika_holdout 2000
+```
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+**Step 2: Create Evaluation Manifests**
+```
+# AEGIS benchmark manifest
+python ./data/create_aegis_manifest.py \
+  --aegis_root ./data/AEGIS \
+  --output_manifest ./manifests/aegis_manifest.csv
 
-3. **Run demo**
+# DFDC benchmark mainfest
+python ./data/create_dfdc_manifest.py \
+  --dfdc_root ./data/DFDC/dfdc_train_part_48/dfdc_train_part_48 \
+  --metadata ./data/DFDC/dfdc_train_part_48/dfdc_train_part_48/metadata.json \
+  --output_manifest ./manifests/dfdc_test_manifest.csv
 
-   ```bash
-   python demo.py --video sample.mp4
-   ```
+# WildDeepfake benchmark manifest
+python .\data\create_wilddeepfake_manifest.py `
+  --wilddeepfake_root .\data\WildDeepfake `
+  --output_manifest .\manifests\wilddeepfake_test_manifest.csv
+```
 
-   Example Output:
+**Step 3: Extract Video Frames**
+```
+# Extract frames from all training manifests
+$manifests = @(
+  "./manifests/train_manifest.csv",
+  "./manifests/val_manifest.csv", 
+  "./manifests/test_manifest.csv",
+  "./manifests/cl_arrival_manifest.csv",
+  "./manifests/pika_holdout_manifest.csv"
+)
 
-   ```
-   Prediction: 73% AI-generated
-   ```
+foreach ($m in $manifests) {
+  if (Test-Path $m) {
+    Write-Host "Processing $m"
+    python ./data/extract_frames.py --manifest $m --out ./frames --fps 2 --size 224 --max_frames 32
+  }
+}
+```
+
+**Step 4: Generate Embeddings**
+```
+# Create SigLIP embeddings for all frames
+python ./data/extract_embeddings.py \
+  --frames_root ./frames \
+  --split train_manifest \
+  --out_root ./embeddings \
+  --batch 1 \
+  --fp16
+```
+
+#### 3. Training
+
+**Baseline Model Training (UNITE)**
+```
+python ./train/train_baseline.py \
+  --manifest ./manifests/train_manifest.csv \
+  --emb_root ./embeddings \
+  --out ./models/Baseline/baseline.pth \
+  --device cuda \
+  --epochs 8 \
+  --batch 8 \
+  --lr 2e-4 \
+  --weight_decay 0.01 \
+  --max_len 32 \
+  --d_model 128 \
+  --nhead 4 \
+  --nlayers 2 \
+  --attention_diversity 0.15
+```
+
+**Continual Learning Training (UNITE-CL)**
+```
+python ./train/train_cl.py \
+  --tasks ./manifests/cl_arrival_manifest.csv \
+  --emb_root ./embeddings \
+  --init_model ./models/Baseline/baseline.pth \
+  --buffer_size 300 \
+  --buffer_add_per_epoch 30 \
+  --replay_ratio 0.3 \
+  --epochs_per_task 5 \
+  --batch 8 \
+  --lr 1e-4 \
+  --lwf \
+  --kd_lambda 0.5 \
+  --max_len 32 \
+  --emb_dim 768 \
+  --d_model 128 \
+  --nhead 4 \
+  --nlayers 2 \
+  --out_dir ./models/Continual \
+  --use_adapters \
+  --adapter_bottleneck 32
+```
+
+#### 4. Evaluation
+
+**Baseline Model Evaluation**
+```
+python ./eval/eval_baseline.py \
+  --manifest ./manifests/val_manifest.csv \
+  --emb_root ./embeddings \
+  --model ./models/Baseline/baseline.pth \
+  --out_csv ./results/preds_val_baseline.csv \
+  --device cuda \
+  --batch 8 \
+  --max_len 32 \
+  --nhead 4 \
+  --nlayers 2 \
+  --threshold 0.5
+```
+
+**Continual Learning Model Evaluation**
+```
+python ./eval/eval_cl.py \
+  --manifest ./manifests/val_manifest.csv \
+  --emb_root ./embeddings \
+  --model ./models/Continual/traincl_fast_task1.pth \
+  --out_csv ./results/preds_val_unitecl.csv \
+  --use_adapters \
+  --adapter_bottleneck 64 \
+  --device cuda \
+  --batch 8 \
+  --max_len 32 \
+  --nhead 4 \
+  --nlayers 2 \
+  --threshold 0.5
+```
+
+**Cross-Dataset Testing (AEGIS, DFDC)**
+```
+# Test on AEGIS benchmark
+python ./eval/eval_baseline.py \
+  --manifest ./manifests/aegis_videos_manifest.csv \
+  --emb_root ./embeddings \
+  --model ./models/Baseline/baseline.pth \
+  --out_csv ./results/preds_aegis_baseline.csv
+
+# Test on DFDC
+python ./eval/eval_baseline.py \
+  --manifest ./manifests/dfdc_part48_manifest.csv \
+  --emb_root ./embeddings \
+  --model ./models/Baseline/baseline.pth \
+  --out_csv ./results/preds_dfdc_baseline.csv
+```
 
 ---
 
-### 📈 Results (To Be Updated)
+## 📊 Results
 
-* ✅ Higher accuracy on both old and new datasets compared to baseline CL methods.
-* ✅ Improved AUC and F1-score retention under continual updates.
-* ✅ Strong cross-dataset performance showing real-world robustness.
-* 📊 Results and plots (loss curves, ROC, confusion matrices).
+| Dataset         | Baseline Accuracy | Continual Accuracy | Baseline AUC | Continual AUC |
+|-----------------|------------------|-------------------|--------------|--------------|
+| **Celeb-DF**        | 91.2%         | 92.4%             | 0.88         | 0.90         |
+| **DFDC**            | 82.08%        | 82.87%            | 0.75         | 0.78         |
+| **WildDeepfake**    | 68.5%         | 72.7%             | 0.62         | 0.66         |
+| **VidProM**         | 82.1%         | 85.4%             | 0.80         | 0.83         |
+| **AEGIS**           | 72.4%         | 75.9%             | 0.74         | 0.78         |
+
+These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
+
+- ✅ **Continual Learning Improvement:** Unlike typical CL methods that suffer performance drops, UNITE-CL shows consistent improvements.
+- ✅ **Cross-Dataset Robustness:** Strong generalization across diverse synthetic video types.
+- ✅ **Real-World Applicability:** Tested on challenging benchmarks including AEGIS and in-the-wild datasets.
 
 ---
 
 ### 🛠️ Future Work
 
-* Add More Synthetic data for the model to train.
-* Integrating real-time detection pipelines for streaming platforms.
-* Scaling continual learning for unseen generative techniques.
-* Exploring lightweight deployment for edge devices.
+* Integration with real-time video streaming platforms
+* Lightweight deployment for edge devices  
+* Expansion to multimodal detection (audio + video)
+* Advanced continual learning strategies for emerging generative models
+
+---
+
+### 📄 Citation
+
+If you use this work, please cite:
+```
+@misc{doke2025unite,
+  title={UNITE-CL: Universal Transformer for Continual Video Deepfake Detection},
+  author={Yash Doke},
+  year={2025},
+  url={https://github.com/yashdoke7/AI-Generated-Video-Detection}
+}
+```
 
 ---
 
 ### 📜 License
 
-MIT License
-
----
+MIT License - see LICENSE file for details
+```
