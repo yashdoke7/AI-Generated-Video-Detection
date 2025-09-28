@@ -66,7 +66,7 @@ AI-Generated-Video-Detection/
 * **Evaluation/Testing**: AEGIS, WildDeepfake, DFDC parts, cross-dataset generalization tests
 * **Total Size**: ~80GB (datasets not included in repo — download links provided separately)
   
-# Dataset Download Links for Reference
+# Dataset Download Links
 
 * Celeb-DF : https://github.com/yuezunli/celeb-deepfakeforensics
 * DFDC (DeepFake Detection Challenge) : https://www.kaggle.com/c/deepfake-detection-challenge
@@ -298,6 +298,12 @@ python .\eval\eval_baseline.py `
 | **WildDeepfake**    | 68.5%         | 72.7%             | 0.62         | 0.66         |
 | **VidProM**         | 82.1%         | 85.4%             | 0.80         | 0.83         |
 | **AEGIS**           | 72.4%         | 75.9%             | 0.74         | 0.78         |
+
+<img width="4472" height="1772" alt="benchmark_comparison" src="https://github.com/user-attachments/assets/a75cc35d-e82d-4cc3-892d-648720acab90" />
+
+<img width="4472" height="1773" alt="learning_curves" src="https://github.com/user-attachments/assets/7419f0fc-d529-4bb2-9863-2b0922a0b723" />
+
+<img width="2369" height="2372" alt="roc_curves" src="https://github.com/user-attachments/assets/79fe4d5a-6994-4e44-b185-a3a9ee41956d" />
 
 These results demonstrate consistent improvements using the UNITE-CL continual learning strategy across all major benchmarks.
 
