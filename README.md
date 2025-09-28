@@ -335,3 +335,9 @@ If you use this work, please cite:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
+
+## References
+
+For detailed background and key papers related to this project, see [REFERENCES.md](./REFERENCES.md).
+
+---
