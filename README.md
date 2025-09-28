@@ -79,14 +79,29 @@ AI-Generated-Video-Detection/
 
 ### 🚀 Getting Started
 
-#### 1. Clone and Setup
+#### 1. Clone
 ```
 git clone https://github.com/yashdoke7/AI-Generated-Video-Detection.git
 cd AI-Generated-Video-Detection
+```
+
+#### 2. Set up the Environment
+
+Create and activate virtual environment:
+```
+python -m venv venv
+
+# Windows
+venv\\Scripts\\activate
+
+# Mac/Linux
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-#### 2. Data Preparation
+#### 3. Data Preparation
 
 **Step 1: Create Training Manifests (Main Datasets) (Manifests for these are already attached in the repo - Skip unless you want to change the dataset distribution)**
 ```
@@ -185,7 +200,7 @@ python .\data\extract_embeddings.py `
   --fp16
 ```
 
-#### 3. Training
+#### 4. Training
 
 **Baseline Model Training (UNITE)**
 ```
@@ -229,7 +244,7 @@ python ./train/train_cl.py \
   --adapter_bottleneck 32
 ```
 
-#### 4. Evaluation
+#### 5. Evaluation
 
 **Baseline Model Evaluation**
 ```
