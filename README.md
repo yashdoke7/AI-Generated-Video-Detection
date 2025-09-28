@@ -94,16 +94,21 @@ python ./data/make_manifests_from_structure.py \
 
 **Step 2: Create Evaluation Manifests**
 ```
-# AEGIS benchmark manifest (for final testing)
+# AEGIS benchmark manifest
 python ./data/create_aegis_manifest.py \
   --aegis_root ./data/AEGIS \
   --output_manifest ./manifests/aegis_videos_manifest.csv
 
-# DFDC specific part manifest (for additional testing)
+# DFDC benchmark mainfest
 python ./data/create_dfdc_manifest.py \
   --dfdc_root ./data/DFDC/dfdc_train_part_48/dfdc_train_part_48 \
   --metadata ./data/DFDC/dfdc_train_part_48/dfdc_train_part_48/metadata.json \
   --output_manifest ./manifests/dfdc_part48_manifest.csv
+
+# WildDeepfake benchmark manifest
+python .\data\create_wilddeepfake_manifest.py `
+  --wilddeepfake_root .\data\WildDeepfake `
+  --output_manifest .\manifests\wilddeepfake_manifest.csv
 ```
 
 **Step 3: Extract Video Frames**
