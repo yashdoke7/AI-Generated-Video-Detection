@@ -22,7 +22,7 @@ My approach leverages **frame-level embeddings** and **transformer-based reasoni
 
 ### Architecture Diagram
 
-<img width="1632" height="691" alt="Architecture Diagram drawio" src="https://github.com/user-attachments/assets/6385b132-b16f-4162-80e6-4258aa949d58" />
+<img width="644" height="427" alt="image" src="https://github.com/user-attachments/assets/0f3906df-83f8-4c9f-bcab-f12d01682ad7" />
 
 ---
 
